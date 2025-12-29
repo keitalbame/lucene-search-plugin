@@ -57,6 +57,10 @@ public enum Field {
                 + "since no furtehr text is written to the output stream.")
     @Override
     public String getValue(Run<?, ?> build) {
+      // Guard to disable console log indexing via JVM system property
+      if (!Boolean.parseBoolean(System.getProperty("lucene.search.indexConsoleLogs", "true"))) {
+        return null;
+      }
       try {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         build.getLogText().writeLogTo(0, byteArrayOutputStream);
